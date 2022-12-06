@@ -90,6 +90,7 @@ DATABASES = {
         "PASSWORD": config.databases["password"],
         "PORT": config.databases["port"],
         "OPTIONS": {"charset": "utf8mb4"},
+        "HOST": config.databases["host"]
     }
 }
 
