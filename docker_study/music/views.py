@@ -10,11 +10,17 @@ class MusicView(APIView):
     def get(self, request):
         obj = Music.objects.all()
         data = MusicSerialzier(instance=obj, many=True)
-        return JsonResponse(data.data, status=status.HTTP_200_OK, safe=False)
+        f = open('./sentence/text', 'r')
+        sentence = f.readlines()
+        f.close()
+        return JsonResponse({"sentence":sentence, "data":data.data}, status=status.HTTP_200_OK, safe=False)
 
     def post(self, request):
         data = request.data
         params = MusicSerialzier(data=data)
         params.is_valid(raise_exception=True)
         params.save()
+        f = open('./sentence/text', 'a')
+        f.write(request.data.get("title") + " what " +request.data.get("author"))
+        f.close()
         return JsonResponse(params.data, status=status.HTTP_200_OK)
