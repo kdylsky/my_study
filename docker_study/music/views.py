@@ -26,7 +26,6 @@ from music.models import Music
 #         return JsonResponse(params.data, status=status.HTTP_200_OK)
 
 
-
 # host : "host.docker.internal" 내부로컬
 # host : "DB컨테이너 ip주소"
 # host : mysql-container   네트워크 구성된 컨테이너이름
@@ -34,7 +33,7 @@ class MusicView(APIView):
     def get(self, request):
         obj = Music.objects.all()
         data = MusicSerialzier(instance=obj, many=True)
-        return JsonResponse({"sentence":"ok", "data":data.data}, status=status.HTTP_200_OK, safe=False)
+        return JsonResponse({"sentence":"bad", "data":data.data}, status=status.HTTP_200_OK, safe=False)
 
     def post(self, request):
         data = request.data
