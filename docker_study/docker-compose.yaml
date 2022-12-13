@@ -1,0 +1,51 @@
+version: "3.8"
+services:
+  mysqldb:
+    image: "mysql"
+    volumes:
+      - my_db:/var/lib/mysql
+    # environment:
+      # MYSQL_ROOT_PASSWORD : password
+      # MYSQL_DATABASE : docker
+      # - MYSQL_ROOT_PASSWORD = password
+      # - MYSQL_DATABASE = docker
+    # : 을 사용하게된다면 -이 필요없다. 하지만 =을 사용한다면 필요하다
+    env_file:
+      - ./env/mysql_db.env
+    ports:
+      - "3306:3306"
+  
+
+  # migration:
+  #   build: ./docker_study 
+  #   command: python manage.py migrate 
+  #   volumes:
+  #     - ./docker_study:/app
+  #   depends_on:
+  #     - mysqldb
+
+
+  backend:
+    build: ./docker_study 
+    # build:
+    #   context: ./docker_study # 도커파일이 빌드되는 장소이기도 하다
+    #   dockerfile: Dockerfile
+    #   args:
+    #     - name=value
+    ports:
+      - "8000:8000"
+    volumes:
+      - logs:/app/docker_study/my_logs  
+      - ./docker_study:/app
+      - /app/python_modules
+    
+    restart: always
+
+    depends_on:
+      - mysqldb
+  
+volumes:
+  my_db:
+  logs:      
+
+
